@@ -159,8 +159,13 @@ env:
 
 **Solution** : Bien définir base: '/nom_du_depot/' dans vite.config.js.
 
+### ✅ Résultat final
+- ✅ L’application est buildée automatiquement après chaque push.
 
+- ✅ Le déploiement est fait via GitHub Actions vers GitHub Pages.
 
+- ✅ Le site est accessible à l'adresse :
+ 🔗 https://djoumessi2004.github.io/epsi_ci_cd_project/
 
 
 
