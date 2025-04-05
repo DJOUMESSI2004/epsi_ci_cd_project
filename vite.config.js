@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // base: '/epsi_ci_cd_project/',
+  base: '/epsi_ci_cd_project/',
   plugins: [react()],
 })
