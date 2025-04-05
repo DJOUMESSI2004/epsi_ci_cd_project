@@ -10,57 +10,54 @@ Automate the build and deployment of a React application (created with Vite) usi
 
 ### 1. Create the React App
 
-```bash
+```
 npm create vite@latest hello_world_app -- --template react
 cd hello_world_app
 npm install
-2. Initialize Git and Connect to GitHub
-bash
-Copy
-Edit
+```
+### 2.  Initialisation Git & Dépôt GitHub
+```
 git init
-git remote add origin https://github.com/YOUR_USERNAME/your-repo-name.git
+git remote add origin https://github.com/DJOUMESSI2004/epsi_ci_cd_project.git
 git add .
 git commit -m "Initial commit"
 git push -u origin master
-3. Configure Vite for GitHub Pages
-Edit vite.config.js:
 
-js
-Copy
-Edit
+```
+
+### 2.  Initialisation Git & Dépôt GitHub
+Pour s’assurer que les ressources se chargent correctement depuis GitHub Pages :
+
+```
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/your-repo-name/', // Use your GitHub repo name here
+  base: '/epsi_ci_cd_project/', // Chemin du dépôt GitHub
   plugins: [react()],
 })
-4. Setup Deployment Script
-Install gh-pages:
 
-bash
-Copy
-Edit
-npm install --save-dev gh-pages
-In package.json, add:
+```
 
-json
-Copy
-Edit
+### 4. Installation des dépendances nécessaires au déploiement
+
+```
+npm install gh-pages --save-dev
+
+```
+Ajout dans package.json :
+
+```
 "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview",
   "predeploy": "npm run build",
   "deploy": "gh-pages -d dist"
 }
-⚙️ GitHub Actions Workflow
-Create the file .github/workflows/deploy.yml:
 
-yaml
-Copy
-Edit
+```
+### 5. Configuration du Workflow GitHub Actions
+Chemin : .github/workflows/deploy.yml
+```
 name: CI/CD Pipeline
 
 on:
@@ -72,8 +69,11 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write 
+
     steps:
-      - name: Checkout code
+      - name: Checkout le code
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -81,68 +81,92 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: Installer les dépendances
         run: npm install
 
-      - name: Run tests
+      - name: Lancer les tests
         run: echo "No tests yet" && exit 0
 
-      - name: Build the app
+      - name: Build de l'app
         run: npm run build
 
-      - name: Configure Git
+      - name: Configurer Git
         run: |
-          git config user.name "YOUR_NAME"
-          git config user.email "your-email@example.com"
+          git config user.name "DJOUMESSI2004"
+          git config user.email "wilfridndongmo@gmail.com"
 
-      - name: Deploy to GitHub Pages
-        run: |
-          npm run deploy -- -u "YOUR_NAME <your-email@example.com>" -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/YOUR_USERNAME/your-repo-name.git
+      - name: Déployer sur GitHub Pages
+        run: npm run deploy
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
- Common Errors & Solutions
- Missing script: "test"
- Solution: No test defined yet
+```
 
-yaml
-Copy
-Edit
+### ❌ Erreurs rencontrées & ✅ Solutions
+
+**Cause** : Aucun script de test défini.
+
+**Solution** : Remplacer par une commande vide dans le workflow :
+```
 run: echo "No tests yet" && exit 0
- ENOENT: no such file or directory, stat 'build'
- Solution: Use dist for Vite
 
-json
-Copy
-Edit
+```
+### ❌ Erreur : ENOENT: no such file or directory, stat 'build'
+
+**Cause** : Vite génère un dossier dist et non build.
+
+**Solution** : Dans package.json :
+
+```
 "deploy": "gh-pages -d dist"
- empty ident name or Permission denied
- Solution: Set Git identity + use correct GitHub token:
 
-yaml
-Copy
-Edit
-git config user.name "Your Name"
-git config user.email "your-email@example.com"
-bash
-Copy
-Edit
-gh-pages -d dist -r https://x-access-token:${GH_TOKEN}@github.com/YOUR_USERNAME/your-repo-name.git
- Assets 404 on GitHub Pages
- Solution: Ensure vite.config.js contains:
+```
 
-js
-Copy
-Edit
-base: '/your-repo-name/'
- Result
-Your app is automatically:
+### ❌ Erreur : empty ident name (problème d'identité git)
+**Cause** : L’action GitHub n’a pas d’identité utilisateur.
 
-Built on every push to master
+**Solution** : Ajouter une étape de config Git dans le workflow :
 
-Deployed to GitHub Pages at:
- https://YOUR_USERNAME.github.io/your-repo-name/
+```
+git config user.name "Mon Nom"
+git config user.email "monmail@example.com"
 
- Resources
-🔗 GitHub Repository
+```
 
-📄 This README
+### ❌ Erreur : Permission denied to github-actions[bot]
+**Cause** : Mauvaise URL de déploiement.
+
+**Solution*** : Ajouter le token d’auth dans l’URL :
+
+```
+gh-pages -d dist -r https://x-access-token:${GH_TOKEN}@github.com/MON_USERNAME/NOM_DU_DEPOT.git
+
+```
+
+### ❌ Erreur : Bad substitution → GH_TOKEN
+
+**Cause** : Mauvais usage de ${{ secrets.GITHUB_TOKEN }} dans un script shell.
+
+**Solution** : Passer la variable d’environnement correctement via env: :
+
+```
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+```
+
+### ❌ Erreur 404 sur les fichiers CSS/JS après déploiement
+**Cause** : Mauvais chemin de base.
+
+**Solution** : Bien définir base: '/nom_du_depot/' dans vite.config.js.
+
+
+
+
+
+
+
+
+
+
+
+
