@@ -5,6 +5,26 @@
 Automate the build and deployment of a React application (created with Vite) using GitHub Actions and GitHub Pages.
 
 ---
+### 🛠️ Technologies Utilisées
+- React
+
+- Vite
+
+- GitHub Actions
+
+- gh-pages
+
+### 📂 Arborescence Clé
+
+```
+hello_world_app/
+├── dist/                # Dossier généré par Vite
+├── src/                 # Composants React
+├── .github/workflows/  # Contient le fichier de déploiement CI/CD
+│   └── deploy.yml
+├── vite.config.js       # Configuration du chemin de base
+├── package.json         # Scripts de build et deploy
+```
 
 ## 🛠️ Project Setup
 
