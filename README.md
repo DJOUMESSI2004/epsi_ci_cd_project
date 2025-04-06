@@ -112,8 +112,8 @@ jobs:
 
       - name: Configurer Git
         run: |
-          git config user.name "DJOUMESSI2004"
-          git config user.email "wilfridndongmo@gmail.com"
+          git config user.name "myusername"
+          git config user.email "myemail@gmail.com"
 
       - name: Déployer sur GitHub Pages
         run: npm run deploy
