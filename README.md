@@ -45,7 +45,7 @@ git push -u origin master
 
 ```
 
-### 2.  Initialisation Git & Dépôt GitHub
+### 3. Configuration du fichier vite.config.js
 Pour s’assurer que les ressources se chargent correctement depuis GitHub Pages :
 
 ```
